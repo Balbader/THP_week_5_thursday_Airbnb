@@ -9,16 +9,11 @@
 require 'faker'
 
 
-Dog.destroy_all
-City.destroy_all
-Stroll.destroy_all
-Dogsitter.destroy_all
-
-
 # Generate les dogs
 def generate_dogs
+  Dog.destroy_all
   i = 0
-  while i < 51
+  while i < 50
     Dog.create(dog_name: Faker::Name.first_name)
     i += 1
   end
@@ -27,8 +22,9 @@ end
 
 # Generate les city
 def generate_city
+  City.destroy_all
   i = 0
-  while i < 21
+  while i < 20
     City.create(city_name: Faker::Address.city)
     i += 1
   end
@@ -37,8 +33,9 @@ end
 
 # Generate les sitter
 def generate_sitters
+  Dogsitter.destroy_all
   i = 0
-  while i < 31
+  while i < 30
     Dogsitter.create(name: Faker::Name.name)
     i += 1
   end
@@ -47,23 +44,24 @@ end
 
 # Generate les stroll
 def generate_stroll
+  Stroll.destroy_all
   i = 0
-  while i < 151
-    d = Dog.order("RANDOM()").limit(1).ids[0]
-    ds = Dogsitter.order("RANDOM()").limit(1).ids[0]
-    c = City.order("RANDOM()").limit(1).ids[0]
+  while i < 150
+    d = Dog.all.sample.id
+    ds = Dogsitter.all.sample.id
+    c = City.all.sample.id
     Stroll.create(
       dog_id: d,
       dogsitter_id: ds,
-      city_id: d
+      city_id: c
     )
     i += 1
   end
 end
 
 
-puts generate_dogs
-puts generate_city
-puts generate_sitters
+generate_dogs
+generate_city
+generate_sitters
 generate_stroll
 
